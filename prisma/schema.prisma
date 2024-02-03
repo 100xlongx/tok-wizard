@@ -1,10 +1,6 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// datasource db {
-//     provider = "sqlite"
-//     url      = env("DATABASE_URL")
-// }
+generator client {
+  provider = "prisma-client-js"
+}
 
 datasource db {
   provider     = "mysql"
@@ -12,14 +8,21 @@ datasource db {
   relationMode = "prisma"
 }
 
-generator client {
-  provider = "prisma-client-js"
-}
 model Message {
-    id          String      @id @default(cuid())
-    content     String      @db.VarChar(255)
-    createdAt   DateTime    @default(now())
-    authorId    String  
+  id        String   @id @default(cuid())
+  content   String   @db.VarChar(255)
+  createdAt DateTime @default(now())
+  authorId  String
 
-    @@index([authorId])
+  @@index([authorId])
+}
+
+model User {
+  id        String   @id
+  clerkId   String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+
+  @@index([clerkId])
 }
