@@ -1,30 +1,16 @@
-
-import { SignIn, UserButton, useUser, auth, currentUser, useAuth } from "@clerk/nextjs";
+import { UserButton } from "@clerk/nextjs";
 import { api } from "@tok-wizard/trpc/server";
+import { Front } from '@tok-wizard/app/_components/front';
 
 export default async function Home() {
   // const {session} = useSession();
-  // const hello = await api.post.hello.query({ text: "from tRPC" });
-
-  // const { userId } = auth();
-  // const { isLoaded, userId, sessionId, getToken } = useAuth();
-
-  // console.log(sessionId);
-
-  // const user = await currentUser()
-
-  // console.log(userId);
-  // console.log(user);
-  // const { user } = useUser();
-
-  
+  // const hello = await api.message.getAll();  
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
       <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
         <UserButton afterSignOutUrl="/" />
-        {/* <SignIn /> */}
-        <UserButton />
+        <Front/>
       </div>
     </div>
   )
