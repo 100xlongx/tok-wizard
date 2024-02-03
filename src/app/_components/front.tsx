@@ -1,9 +1,11 @@
 'use client'
 
+import { useUser } from "@clerk/nextjs";
 import { api } from "@tok-wizard/trpc/react";
 
 export function Front() {
     const { data } = api.message.getAll.useQuery();
+    const { user } = useUser();
 
     return (
         <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
