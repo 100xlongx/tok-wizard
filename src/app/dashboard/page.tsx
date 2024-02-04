@@ -1,18 +1,21 @@
 import { api } from "@tok-wizard/trpc/server";
-import { Button } from '@components/shadcn/ui/button';
+import { CreatePostWizard } from '@components/create-post';
 
 export default async function Page() {
-    // const messages = await api.message.getLatest.query();
-
-    const hiddenMessage = await api.message.getHiddenMessage.query();
-
-    console.log(hiddenMessage)
+    const messages = await api.message.getAll.query();
 
     return (
         <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-gray-800 to-black text-white">
             <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-                {/* Place your components from Shad's UI here */}
-                <Button>Click me</Button>
+                <CreatePostWizard/>
+                {/* <Counter /> */}
+
+                {messages?.map?.((message) => (
+                    <div key={message.id}>
+                        <h1>{message.title}</h1>
+                        <p>{message.content}</p>
+                    </div>
+                ))}
             </div>
         </div>
     );

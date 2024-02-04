@@ -1,45 +1,117 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-
+import { Button } from "./shadcn/ui/button";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@components/shadcn/ui/form";
+import { Input } from "@components/shadcn/ui/input"
+import { Textarea } from "@components/shadcn/ui/textarea"
+import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { useToast } from "@components/shadcn/ui/use-toast"
+import { useUser } from "@clerk/nextjs";
 import { api } from "@tok-wizard/trpc/react";
 
-export function CreatePost() {
-  // const router = useRouter();
-  // const [name, setName] = useState("");
+ 
+const formSchema = z.object({
+  title: z.string().min(2).max(50),
+  content: z.string().min(2).max(1000),
+})
 
-  // const createPost = api.post.create.useMutation({
-  //   onSuccess: () => {
-  //     router.refresh();
-  //     setName("");
-  //   },
-  // });
+type FormType = z.infer<typeof formSchema>;
 
-  return (<div>Hello World</div>)
+export function CreatePostWizard() {
+  const { toast } = useToast();
+  // const { user } = useUser();
 
-  // return (
-  //   <form
-  //     onSubmit={(e) => {
-  //       e.preventDefault();
-  //       createPost.mutate({ name });
-  //     }}
-  //     className="flex flex-col gap-2"
-  //   >
-  //     <input
-  //       type="text"
-  //       placeholder="Title"
-  //       value={name}
-  //       onChange={(e) => setName(e.target.value)}
-  //       className="w-full rounded-full px-4 py-2 text-black"
-  //     />
-  //     <button
-  //       type="submit"
-  //       className="rounded-full bg-white/10 px-10 py-3 font-semibold transition hover:bg-white/20"
-  //       disabled={createPost.isLoading}
-  //     >
-  //       {createPost.isLoading ? "Submitting..." : "Submit"}
-  //     </button>
-  //   </form>
-  // );
+  const { mutate, isLoading } = api.message.create.useMutation({
+    onSettled: () => {
+      form.reset();
+    },
+    onSuccess: post => {
+      toast({
+        title: `Post ${post.title} created`,
+        description: "Your post has been created",
+        duration: 5000
+      })
+    },
+    onError: error => {
+      toast({
+        title: "Error creating post",
+        description: error.message,
+        duration: 5000
+      })
+    }
+  });
+
+  const createPost = (post: FormType) => mutate({ title: post.title, content: post.content, authorId: '1'});
+ 
+  const form = useForm<FormType>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: "",
+      content: ""
+    },
+  })
+  
+  function onSubmit(values: FormType) {
+    createPost(values);
+
+    toast({
+      title: "Post created",
+      description: JSON.stringify(values),
+      duration: 5000
+    })
+  }
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <FormField
+          control={form.control}
+          name="title"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Title</FormLabel>
+              <FormControl>
+                <Input placeholder="title" {...field} />
+              </FormControl>
+              <FormDescription>
+                Title of your post
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="content"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Content</FormLabel>
+              <FormControl>
+                <Textarea
+                  placeholder="Content of the post"
+                  className="resize-none"
+                  {...field}
+                />
+              </FormControl>
+              <FormDescription>
+                You can <span>@mention</span> other users and organizations.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button type="submit" disabled={isLoading}>Submit</Button>
+      </form>
+    </Form>
+  )
 }

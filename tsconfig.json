@@ -28,6 +28,7 @@
     "paths": {
       "@tok-wizard/*": ["./src/*"],
       "@components/*": ["./src/app/_components/*"],
+      "@shadcn/*": ["./src/app/_components/shadcn"],
     }
   },
   "include": [

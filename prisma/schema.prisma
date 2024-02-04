@@ -17,6 +17,7 @@ generator client {
 }
 model Message {
     id          String      @id @default(cuid())
+    title       String      @db.VarChar(30)
     content     String      @db.VarChar(255)
     createdAt   DateTime    @default(now())
     authorId    String  
