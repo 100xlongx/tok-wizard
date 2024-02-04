@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { createTRPCRouter, publicProcedure } from "@tok-wizard/server/api/trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "@tok-wizard/server/api/trpc";
 
 export const messageRouter = createTRPCRouter({
     create: publicProcedure
@@ -23,4 +23,7 @@ export const messageRouter = createTRPCRouter({
             orderBy: { createdAt: "desc" },
         });
     }),
+    getHiddenMessage: protectedProcedure.query(({ ctx }) => {
+        return { hello: "world" };
+    })
 });
