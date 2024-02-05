@@ -31,7 +31,9 @@ export function CreatePostWizard() {
   const { toast } = useToast();
   // const { user } = useUser();
 
-  const { mutate, isLoading } = api.message.create.useMutation({
+  const { data: messages, refetch: refetchAllMessages } = api.message.getAll.useQuery();
+
+  const { mutate, isLoading: isCreateMessageLoading } = api.message.create.useMutation({
     onSettled: () => {
       form.reset();
     },
@@ -41,6 +43,8 @@ export function CreatePostWizard() {
         description: "Your post has been created",
         duration: 5000
       })
+
+      refetchAllMessages().catch(console.error);
     },
     onError: error => {
       toast({
@@ -60,20 +64,10 @@ export function CreatePostWizard() {
       content: ""
     },
   })
-  
-  function onSubmit(values: FormType) {
-    createPost(values);
 
-    toast({
-      title: "Post created",
-      description: JSON.stringify(values),
-      duration: 5000
-    })
-  }
-
-  return (
+  const PostView = () => (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(createPost)} className="space-y-8">
         <FormField
           control={form.control}
           name="title"
@@ -110,8 +104,20 @@ export function CreatePostWizard() {
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={isLoading}>Submit</Button>
+        <Button type="submit" disabled={isCreateMessageLoading}>Submit</Button>
       </form>
     </Form>
+  )
+
+  return (
+    <div>
+      <PostView />
+      {messages?.map?.((message) => (
+        <div key={message.id}>
+            <h1>{message.title}</h1>
+            <p>{message.content}</p>
+        </div>
+      ))}
+    </div>
   )
 }
