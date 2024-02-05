@@ -1,4 +1,3 @@
-import { api } from "@tok-wizard/trpc/server";
 import { CreatePostWizard } from '@components/create-post';
 
 export default async function Page() {
