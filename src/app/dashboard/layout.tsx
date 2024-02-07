@@ -1,5 +1,5 @@
 import React from 'react';
-import Navbar from '@components/navbar';
+import Navbar from '@tok-wizard/app/_components/Navbar';
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   return (

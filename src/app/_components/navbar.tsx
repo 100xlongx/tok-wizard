@@ -6,12 +6,11 @@
 import Link from "next/link"
 import { currentUser } from '@clerk/nextjs';
 import { Button } from "./shadcn/ui/button";
+import LogoutButton from "./LogoutButton";
+import { SVGProps } from "react";
 // import { Button } from "./shadcn/ui/button";
 
 export default async function Component() {
-    // const user = await currentUser();
-
-    // console.log(user);
   return (
     <nav className="flex flex-row items-center h-14 px-4 border-b gap-4 md:gap-6">
       <Link className="flex items-center gap-2 text-lg font-semibold" href="#">
@@ -31,58 +30,17 @@ export default async function Component() {
           <SettingsIcon className="w-4 h-4 mr-1.5" />
           Settings
         </Link>
-        <Link className="flex items-center gap-2 text-sm font-medium text-gray-500" href="#">
+        <LogoutButton />
+        {/* <Link className="flex items-center gap-2 text-sm font-medium text-gray-500" href="#">
             <LogOutIcon className="w-4 h-4 mr-1.5" />
             Log out
-        </Link>
-        {/* <div>
-          <div>
-            <Button
-              className="rounded-[10px] border-none shadow-none w-8 h-8 flex items-center justify-center"
-              id="menu-trigger"
-              size="icon"
-            >
-              <img
-                alt="Avatar"
-                className="rounded-full"
-                height="32"
-                src="/placeholder.svg"
-                style={{
-                  aspectRatio: "32/32",
-                  objectFit: "cover",
-                }}
-                width="32"
-              />
-              <span className="sr-only">Toggle user menu</span>
-            </Button>
-          </div>
-          <div className="rounded-t-lg w-44 border p-1">
-            <div>
-              <div>Logged in as</div>
-              <div className="font-semibold">user@example.com</div>
-            </div>
-            <div />
-            <div>
-              <UserIcon className="w-4 h-4 mr-2" />
-              Profile
-            </div>
-            <div>
-              <SettingsIcon className="w-4 h-4 mr-2" />
-              Settings
-            </div>
-            <div />
-            <div>
-              <LogOutIcon className="w-4 h-4 mr-2" />
-              Log out
-            </div>
-          </div>
-        </div> */}
+        </Link> */}
       </div>
     </nav>
   )
 }
 
-function HomeIcon(props) {
+function HomeIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -103,7 +61,7 @@ function HomeIcon(props) {
 }
 
 
-function LogOutIcon(props) {
+function LogOutIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -125,7 +83,7 @@ function LogOutIcon(props) {
 }
 
 
-function PackageIcon(props) {
+function PackageIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -148,7 +106,7 @@ function PackageIcon(props) {
 }
 
 
-function SettingsIcon(props) {
+function SettingsIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -169,7 +127,7 @@ function SettingsIcon(props) {
 }
 
 
-function UserIcon(props) {
+function UserIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
