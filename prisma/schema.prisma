@@ -15,12 +15,29 @@ datasource db {
 generator client {
   provider = "prisma-client-js"
 }
-model Message {
-    id          String      @id @default(cuid())
-    title       String      @db.VarChar(30)
-    content     String      @db.VarChar(255)
-    createdAt   DateTime    @default(now())
-    authorId    String  
 
-    @@index([authorId])
+model Message {
+  id        String   @id @default(cuid())
+  title     String   @db.VarChar(30)
+  content   String   @db.VarChar(255)
+  createdAt DateTime @default(now())
+  authorId  String
+
+  @@index([authorId])
+}
+
+model UserVideoSubmission {
+  id              String           @id @default(cuid())
+  title           String           @db.VarChar(30)
+  content         String
+  generatedVideos GeneratedVideo[]
+}
+
+model GeneratedVideo {
+  id                    String              @id @default(cuid())
+  path                  String
+  userVideoSubmissionId String // This is the foreign key field
+  userVideoSubmission   UserVideoSubmission @relation(fields: [userVideoSubmissionId], references: [id])
+
+  @@index([userVideoSubmissionId]) // Manually add an index for the relation field
 }
