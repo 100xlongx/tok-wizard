@@ -21,11 +21,16 @@ export const userRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
         const clerkId = input.clerkId;
 
-        const user = await ctx.db.user.findUnique({
-            where: {
-                clerkId: clerkId
-            }
-        });
+        // const user = await ctx.db.user.findUnique({
+        //     where: {
+        //         clerkId: clerkId
+        //     }
+        // });
+
+        const user = {
+            id: '1',
+            name: "matt wise"
+        };
         
         if (!user) {
             throw new TRPCError({
