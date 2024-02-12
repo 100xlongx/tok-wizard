@@ -28,9 +28,13 @@ model Message {
 
 model UserVideoSubmission {
   id              String           @id @default(cuid())
+  userId String
   title           String           @db.VarChar(30)
   content         String
+  createdAt      DateTime         @default(now())
   generatedVideos GeneratedVideo[]
+  
+  @@index([userId], name: "userIdIndex")
 }
 
 model GeneratedVideo {

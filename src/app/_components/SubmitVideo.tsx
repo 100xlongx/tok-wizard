@@ -17,6 +17,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { useToast } from "@components/shadcn/ui/use-toast"
 import { api } from "@tok-wizard/trpc/react";
+import { router } from "@trpc/server";
+import { useRouter } from "next/navigation";
 
  
 const formSchema = z.object({
@@ -28,6 +30,7 @@ type FormType = z.infer<typeof formSchema>;
 
 export function SubmitVideoForm() {
   const { toast } = useToast();
+  const router = useRouter();
 
   const { mutate, isLoading: isSubmitVideoLoading } = api.videoSubmission.createVideoSubmission.useMutation({
     onSettled: () => {
@@ -39,6 +42,8 @@ export function SubmitVideoForm() {
         description: "Your post has been created",
         duration: 5000
       })
+
+      router.refresh();
 
     //   refetchAllMessages().catch(console.error);
     },
